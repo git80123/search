@@ -46,38 +46,65 @@
 // Wikipedia API
 async function searchWikipedia() {
   const query = document.getElementById('wikiInput').value;
-  const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`);
-  const data = await res.json();
-  document.getElementById('wikiResult').textContent = JSON.stringify(data, null, 2);
+  if (!query) return;
+  document.getElementById('wikiResult').textContent = "查询中...";
+  try {
+    const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`);
+    const data = await res.json();
+    document.getElementById('wikiResult').textContent = JSON.stringify(data, null, 2);
+  } catch (err) {
+    document.getElementById('wikiResult').textContent = '请求失败: ' + err;
+  }
 }
 
 // TVMaze API
 async function searchTVMaze() {
   const q = document.getElementById('movieInput').value;
-  const res = await fetch(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(q)}`);
-  const data = await res.json();
-  document.getElementById('movieResult').textContent = JSON.stringify(data, null, 2);
+  if (!q) return;
+  document.getElementById('movieResult').textContent = "查询中...";
+  try {
+    const res = await fetch(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(q)}`);
+    const data = await res.json();
+    document.getElementById('movieResult').textContent = JSON.stringify(data, null, 2);
+  } catch (err) {
+    document.getElementById('movieResult').textContent = '请求失败: ' + err;
+  }
 }
 
-// IP-API 地理定位
+// IP-API 地理定位（使用 ipapi.co，支持 HTTPS）
 async function getIPLocation() {
-  const res = await fetch('http://ip-api.com/json');
-  const data = await res.json();
-  document.getElementById('weatherResult').textContent = JSON.stringify(data, null, 2);
+  document.getElementById('weatherResult').textContent = "查询中...";
+  try {
+    const res = await fetch('https://ipapi.co/json/');
+    const data = await res.json();
+    document.getElementById('weatherResult').textContent = JSON.stringify(data, null, 2);
+  } catch (err) {
+    document.getElementById('weatherResult').textContent = '请求失败: ' + err;
+  }
 }
 
 // BoredAPI
 async function getActivity() {
-  const res = await fetch('https://www.boredapi.com/api/activity');
-  const data = await res.json();
-  document.getElementById('funResult').textContent = JSON.stringify(data, null, 2);
+  document.getElementById('funResult').textContent = "查询中...";
+  try {
+    const res = await fetch('https://www.boredapi.com/api/activity');
+    const data = await res.json();
+    document.getElementById('funResult').textContent = JSON.stringify(data, null, 2);
+  } catch (err) {
+    document.getElementById('funResult').textContent = '请求失败: ' + err;
+  }
 }
 
 // JokeAPI
 async function getJoke() {
-  const res = await fetch('https://v2.jokeapi.dev/joke/Any');
-  const data = await res.json();
-  document.getElementById('funResult').textContent = JSON.stringify(data, null, 2);
+  document.getElementById('funResult').textContent = "查询中...";
+  try {
+    const res = await fetch('https://v2.jokeapi.dev/joke/Any');
+    const data = await res.json();
+    document.getElementById('funResult').textContent = JSON.stringify(data, null, 2);
+  } catch (err) {
+    document.getElementById('funResult').textContent = '请求失败: ' + err;
+  }
 }
 </script>
 </body>
