@@ -13,63 +13,37 @@
   </style>
 </head>
 <body>
-  <h1>🎯 多类 API 数据查询平台</h1>
+  <h1>🎯 可用 API 数据查询平台</h1>
 
   <section>
-    <h2>📚 百科搜索</h2>
+    <h2>📚 Wikipedia 百科</h2>
     <input id="wikiInput" placeholder="搜索词...">
     <button onclick="searchWikipedia()">搜索 Wikipedia</button>
     <pre id="wikiResult"></pre>
   </section>
 
   <section>
-    <h2>🎬 影视搜索</h2>
+    <h2>🎬 影视信息（TVMaze）</h2>
     <input id="movieInput" placeholder="电影/电视剧名称">
-    <button onclick="searchTVMaze()">搜索 TVMaze</button>
-    <button onclick="searchOMDb()">搜索 OMDb</button>
+    <button onclick="searchTVMaze()">搜索</button>
     <pre id="movieResult"></pre>
   </section>
 
   <section>
-    <h2>🎵 音乐信息</h2>
-    <input id="artistInput" placeholder="歌手名称">
-    <button onclick="searchLastFM()">搜索 Last.fm</button>
-    <input id="lyricsInput" placeholder="歌曲名">
-    <button onclick="getLyrics()">获取歌词</button>
-    <pre id="musicResult"></pre>
-  </section>
-
-  <section>
-    <h2>🌦️ 天气和地理</h2>
-    <input id="cityInput" placeholder="城市名">
-    <button onclick="getWeather()">获取天气</button>
-    <button onclick="getIPLocation()">根据 IP 获取位置</button>
+    <h2>🌐 IP 定位</h2>
+    <button onclick="getIPLocation()">获取位置</button>
     <pre id="weatherResult"></pre>
   </section>
 
   <section>
-    <h2>🖼️ 壁纸搜索</h2>
-    <input id="photoInput" placeholder="关键词">
-    <button onclick="searchUnsplash()">Unsplash</button>
-    <button onclick="searchPexels()">Pexels</button>
-    <button onclick="searchPixabay()">Pixabay</button>
-    <pre id="photoResult"></pre>
-  </section>
-
-  <section>
-    <h2>📰 新闻</h2>
-    <button onclick="getNews()">获取新闻（Currents）</button>
-    <pre id="newsResult"></pre>
-  </section>
-
-  <section>
     <h2>🎉 趣味工具</h2>
-    <button onclick="getActivity()">获取活动</button>
+    <button onclick="getActivity()">获取活动推荐</button>
     <button onclick="getJoke()">获取笑话</button>
     <pre id="funResult"></pre>
   </section>
 
 <script>
+// Wikipedia API
 async function searchWikipedia() {
   const query = document.getElementById('wikiInput').value;
   const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`);
@@ -77,6 +51,7 @@ async function searchWikipedia() {
   document.getElementById('wikiResult').textContent = JSON.stringify(data, null, 2);
 }
 
+// TVMaze API
 async function searchTVMaze() {
   const q = document.getElementById('movieInput').value;
   const res = await fetch(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(q)}`);
@@ -84,75 +59,21 @@ async function searchTVMaze() {
   document.getElementById('movieResult').textContent = JSON.stringify(data, null, 2);
 }
 
-async function searchOMDb() {
-  const q = document.getElementById('movieInput').value;
-  const res = await fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(q)}&apikey=demo`);
-  const data = await res.json();
-  document.getElementById('movieResult').textContent = JSON.stringify(data, null, 2);
-}
-
-async function searchLastFM() {
-  const artist = document.getElementById('artistInput').value;
-  const res = await fetch(`https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(artist)}&api_key=demo&format=json`);
-  const data = await res.json();
-  document.getElementById('musicResult').textContent = JSON.stringify(data, null, 2);
-}
-
-async function getLyrics() {
-  const title = document.getElementById('lyricsInput').value;
-  const res = await fetch(`https://api.lyrics.ovh/v1/Unknown/${encodeURIComponent(title)}`);
-  const data = await res.json();
-  document.getElementById('musicResult').textContent = JSON.stringify(data, null, 2);
-}
-
-async function getWeather() {
-  const city = document.getElementById('cityInput').value;
-  const res = await fetch(`https://api.weatherapi.com/v1/current.json?key=demo&q=${encodeURIComponent(city)}`);
-  const data = await res.json();
-  document.getElementById('weatherResult').textContent = JSON.stringify(data, null, 2);
-}
-
+// IP-API 地理定位
 async function getIPLocation() {
   const res = await fetch('http://ip-api.com/json');
   const data = await res.json();
   document.getElementById('weatherResult').textContent = JSON.stringify(data, null, 2);
 }
 
-async function searchUnsplash() {
-  const q = document.getElementById('photoInput').value;
-  const res = await fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(q)}&client_id=demo`);
-  const data = await res.json();
-  document.getElementById('photoResult').textContent = JSON.stringify(data, null, 2);
-}
-
-async function searchPexels() {
-  const q = document.getElementById('photoInput').value;
-  const res = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(q)}`, {
-    headers: { Authorization: 'Bearer demo' }
-  });
-  const data = await res.json();
-  document.getElementById('photoResult').textContent = JSON.stringify(data, null, 2);
-}
-
-async function searchPixabay() {
-  const q = document.getElementById('photoInput').value;
-  const res = await fetch(`https://pixabay.com/api/?key=demo&q=${encodeURIComponent(q)}`);
-  const data = await res.json();
-  document.getElementById('photoResult').textContent = JSON.stringify(data, null, 2);
-}
-
-async function getNews() {
-  const res = await fetch(`https://api.currentsapi.services/v1/latest-news?apiKey=demo`);
-  const data = await res.json();
-  document.getElementById('newsResult').textContent = JSON.stringify(data, null, 2);
-}
-
+// BoredAPI
 async function getActivity() {
   const res = await fetch('https://www.boredapi.com/api/activity');
   const data = await res.json();
   document.getElementById('funResult').textContent = JSON.stringify(data, null, 2);
 }
 
+// JokeAPI
 async function getJoke() {
   const res = await fetch('https://v2.jokeapi.dev/joke/Any');
   const data = await res.json();
